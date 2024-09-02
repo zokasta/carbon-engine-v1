@@ -12,7 +12,7 @@ export default function Element({
     { id: "password_input", title: "password", type: "source" },
   ],
   title = "Input",
-  type = "input",
+  typeFormat= "input",
 }) {
   const [defaultFormat, setDefaultFormat] = useState(format);
 
@@ -34,15 +34,18 @@ export default function Element({
 
   const handleEditTitle = (index, newTitle) => {
     setDefaultFormat((prev) =>
-      prev.map((item, i) => (i === index ? { ...item, title: newTitle } : item))
+      prev.map((item, i) => (i === index ? { ...item, title: newTitle,id:`${newTitle}_${typeFormat}` } : item))
     );
+
+    console.log(defaultFormat)
+    console.log(typeFormat)
   };
 
   const handleEvent = () => {
     setIsEditing(true);
     const newElementIndex = defaultFormat.length; // Get the index of the new element
     const newElement = {
-      id: `${""}_${type}`,
+      id: `${""}_${typeFormat}`,
       title: "",
       type: "source",
     };

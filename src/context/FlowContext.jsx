@@ -18,7 +18,7 @@ export function FlowProvider({ children }) {
     loadFromLocalStorage('nodes', [
       { id: 'input_node', position: { x: 200, y: 200 }, type: 'Element', data: { id: '1' } },
       { id: 'output_node_1', position: { x: 800, y: 100 }, type: 'Output', data: { id: '2' } },
-      { id: 'output_node_2', position: { x: 800, y: 300 }, type: 'Output', data: { id: '3' } },
+      // { id: 'output_node_2', position: { x: 800, y: 300 }, type: 'Output', data: { id: '3' } },
     ])
   );
 

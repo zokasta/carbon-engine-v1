@@ -1,9 +1,13 @@
 import React from "react";
 import Axios from "../../Database/Axiso";
+import Delete from "../../assets/SVG/Delete";
 
 export default function Navbar({ nodes = [], edges = [] }) {
   const showData = async () => {
     let ans = nodes.map((node) => {
+      console.log(edges, null, 2);
+      console.log(nodes, null, 2);
+
       let nodeStructure = {
         id: node.id,
         structure: {},
@@ -49,6 +53,14 @@ export default function Navbar({ nodes = [], edges = [] }) {
     }
   };
 
+  const deleteData = () => {
+    const key = "edges"; // Replace 'yourKey' with the actual key you want to delete
+    localStorage.removeItem("edges");
+    localStorage.removeItem("nodes");
+    console.log(`${key} removed from localStorage`);
+    // Optionally, update the state or UI after deletion
+  };
+
   return (
     <div className="w-screen z-20 h-10 bg-[#660479]">
       <button
@@ -57,6 +69,7 @@ export default function Navbar({ nodes = [], edges = [] }) {
       >
         Save
       </button>
+      <Delete className="float-right w-6 m-2 h-6" onClick={deleteData} />
     </div>
   );
 }
