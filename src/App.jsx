@@ -79,7 +79,6 @@ export default function App() {
     [reactFlowInstance, setNodes]
   );
 
-
   const onDragOver = useCallback((event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";

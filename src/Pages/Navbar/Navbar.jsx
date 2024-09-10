@@ -1,19 +1,26 @@
-import React from "react";
-import Axios from "../../Database/Axiso";
-import Delete from "../../assets/SVG/Delete";
+
+import Delete from '../../assets/SVG/Delete'
+import Axios from '../../Database/Axiso'
+
 
 export default function Navbar({ nodes = [], edges = [] }) {
   const showData = async () => {
-    let ans = nodes.map((node) => {
-      console.log(JSON.stringify(edges,null,2));
-      console.log(JSON.stringify(nodes, null, 2));
+    // Dynamically sort nodes: 'Input' types come first, 'Output' types come last
+    const sortedNodes = [...nodes].sort((a, b) => {
+      if (a.type === 'Input' && b.type === 'Output') return -1;
+      if (a.type === 'Output' && b.type === 'Input') return 1;
+      return 0;
+    });
 
+    // Dynamically process nodes and edges to form the structure
+    let ans = sortedNodes.map((node) => {
       let nodeStructure = {
         id: node.id,
+        type: node.type,  // Add the node type to the structure
         structure: {},
       };
 
-      // Filter edges where the current node is the source
+      // For each node, check its outgoing connections (edges)
       edges
         .filter((edge) => edge.source === node.id)
         .forEach((edge) => {
@@ -30,7 +37,7 @@ export default function Navbar({ nodes = [], edges = [] }) {
           });
         });
 
-      // If the node is an output node or has no outgoing edges, default to "none"
+      // Handle cases where nodes have no outgoing edges (default to "none")
       if (Object.keys(nodeStructure.structure).length === 0) {
         nodeStructure.structure = {
           email: { fields: [{ target: "none", location: "none" }] },
@@ -41,10 +48,12 @@ export default function Navbar({ nodes = [], edges = [] }) {
       return nodeStructure;
     });
 
+    // Final output format with file and dynamic structure
     console.log("Processed Structure:");
     ans = { file: "makegame", format: ans };
     console.log(JSON.stringify(ans, null, 2));
 
+    // Make the dynamic API request
     try {
       const response = await Axios.post("/generate-api/", ans);
       console.log("API Response:", response.data);
@@ -53,12 +62,11 @@ export default function Navbar({ nodes = [], edges = [] }) {
     }
   };
 
+  // Function to delete data from localStorage
   const deleteData = () => {
-    const key = "edges"; // Replace 'yourKey' with the actual key you want to delete
     localStorage.removeItem("edges");
     localStorage.removeItem("nodes");
-    console.log(`${key} removed from localStorage`);
-    // Optionally, update the state or UI after deletion
+    console.log("Edges and Nodes removed from localStorage");
   };
 
   return (
