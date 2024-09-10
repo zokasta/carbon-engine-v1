@@ -16,9 +16,9 @@ const loadFromLocalStorage = (key, defaultValue) => {
 export function FlowProvider({ children }) {
   const [nodes, setNodes, onNodesChange] = useNodesState(
     loadFromLocalStorage('nodes', [
-      { id: 'input_node', position: { x: 200, y: 200 }, type: 'Element', data: { id: '1' } },
+      { id: 'input_node', position: { x: 200, y: 200 }, type: 'Input', data: { id: '1' } },
       { id: 'output_node_1', position: { x: 800, y: 100 }, type: 'Output', data: { id: '2' } },
-      // { id: 'output_node_2', position: { x: 800, y: 300 }, type: 'Output', data: { id: '3' } },
+      { id: 'plugin_node_1', position: { x: 800, y: 300 }, type: 'Plugin', data: { id: '3',name:'Email Validator' } },
     ])
   );
 

@@ -15,6 +15,7 @@ export default function Element({
   typeFormat= "input",
 }) {
   const [defaultFormat, setDefaultFormat] = useState(format);
+  const [defaultFormatCopy, setDefaultFormatCopy] = useState(format);
 
   const [isEditing, setIsEditing] = useState(false); // State to toggle edit mode
   const inputRefs = useRef([]); // Ref to manage multiple input elements

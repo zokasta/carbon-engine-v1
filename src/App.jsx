@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback, useRef, useState } from "react";
 import ReactFlow, { Controls, Background } from "reactflow";
 import "reactflow/dist/style.css";
 import { useFlowContext } from "./context/FlowContext";
@@ -9,17 +9,25 @@ import Navbar from "./Pages/Navbar/Navbar";
 import Plugin from "./assets/SVG/Plugin";
 import Sidebar from "./Pages/Sidebar/Sidebar";
 import { useAppContext } from "./context/Context";
+import PluginElement from "./components/PluginElement";
 
 export default function App() {
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, setEdges } =
-    useFlowContext();
+  const {
+    nodes,
+    edges,
+    onNodesChange,
+    onEdgesChange,
+    onConnect,
+    setNodes,
+    setEdges,
+  } = useFlowContext();
   const { state, dispatch } = useAppContext();
 
-  // Memoize nodeTypes and edgeTypes
   const nodeTypes = useMemo(
     () => ({
-      Element: Element,
+      Input: Element,
       Output: Output,
+      Plugin: PluginElement,
     }),
     []
   );
@@ -36,10 +44,46 @@ export default function App() {
     gridTemplateColumns: state.plugin ? "170px 1fr" : "0px 1fr",
   };
 
-  // Function to handle edge deletion
+  const reactFlowWrapper = useRef(null);
+  const [reactFlowInstance, setReactFlowInstance] = useState(null);
+
   const handleDeleteEdge = (id) => {
     setEdges((eds) => eds.filter((edge) => edge.id !== id));
   };
+
+  const onDrop = useCallback(
+    (event) => {
+      event.preventDefault();
+      const nodeType = event.dataTransfer.getData("nodeType");
+      const nodeData = JSON.parse(event.dataTransfer.getData("nodeData"));
+      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+
+      if (reactFlowInstance) {
+        const position = reactFlowInstance.project({
+          x: event.clientX - reactFlowBounds.left,
+          y: event.clientY - reactFlowBounds.top,
+        });
+
+        if (nodeType) {
+          const newNode = {
+            id: `${nodeType}_${new Date().getTime()}`,
+            type: nodeType,
+            position,
+            data: { ...nodeData },
+          };
+
+          setNodes((nds) => [...nds, newNode]);
+        }
+      }
+    },
+    [reactFlowInstance, setNodes]
+  );
+
+
+  const onDragOver = useCallback((event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  }, []);
 
   return (
     <div style={{ width: "100vw", height: "100vh", position: "relative" }}>
@@ -62,35 +106,43 @@ export default function App() {
             </li>
           </ul>
         </div>
-        <div className="w-[100vw-48px] duration-200 h-[calc(100vh-40px)]" style={gridStyles}>
-        <Sidebar />
-          <ReactFlow
-            nodes={nodes}
-            edges={edges.map((edge) => ({
-              ...edge,
-              type: "custom", // Ensure all edges are using the custom edge
-              data: { onDeleteEdge: handleDeleteEdge },
-            }))}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={(params) =>
-              onConnect({
-                ...params,
+        <div
+          className="w-[100vw-48px] duration-200 h-[calc(100vh-40px)]"
+          style={gridStyles}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
+        >
+          <Sidebar />
+          <div ref={reactFlowWrapper} style={{ height: "100%" }}>
+            <ReactFlow
+              nodes={nodes}
+              edges={edges.map((edge) => ({
+                ...edge,
                 type: "custom",
                 data: { onDeleteEdge: handleDeleteEdge },
-              })
-            }
-            nodeTypes={nodeTypes}
-            edgeTypes={edgeTypes}
-          >
-            <Controls />
-            <Background
-              variant="dots"
-              gap={25}
-              size={2}
-              className="bg-[#fbf8f6] h-20"
-            />
-          </ReactFlow>
+              }))}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
+              onConnect={(params) =>
+                onConnect({
+                  ...params,
+                  type: "custom",
+                  data: { onDeleteEdge: handleDeleteEdge },
+                })
+              }
+              nodeTypes={nodeTypes}
+              edgeTypes={edgeTypes}
+              onInit={setReactFlowInstance} // Set the reactFlowInstance here
+            >
+              <Controls />
+              <Background
+                variant="dots"
+                gap={25}
+                size={2}
+                className="bg-[#fbf8f6] h-20"
+              />
+            </ReactFlow>
+          </div>
         </div>
       </div>
     </div>

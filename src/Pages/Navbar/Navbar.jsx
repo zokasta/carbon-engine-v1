@@ -5,8 +5,8 @@ import Delete from "../../assets/SVG/Delete";
 export default function Navbar({ nodes = [], edges = [] }) {
   const showData = async () => {
     let ans = nodes.map((node) => {
-      console.log(edges, null, 2);
-      console.log(nodes, null, 2);
+      console.log(JSON.stringify(edges,null,2));
+      console.log(JSON.stringify(nodes, null, 2));
 
       let nodeStructure = {
         id: node.id,
