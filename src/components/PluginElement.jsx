@@ -14,69 +14,6 @@ export default function PluginElement({
   title = "Input",
   typeFormat = "input",
 }) {
-  const [defaultFormat, setDefaultFormat] = useState(format);
-
-  const [isEditing, setIsEditing] = useState(false); // State to toggle edit mode
-  const inputRefs = useRef([]); // Ref to manage multiple input elements
-
-  // Handle keydown events for Ctrl + S
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.ctrlKey && event.key === "s") {
-        event.preventDefault(); // Prevent the default browser save action
-        setIsEditing(false); // Set editing mode to false
-      }
-    };
-
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
-  const handleEditTitle = (index, newTitle) => {
-    setDefaultFormat((prev) =>
-      prev.map((item, i) =>
-        i === index
-          ? { ...item, title: newTitle, id: `${newTitle}_${typeFormat}` }
-          : item
-      )
-    );
-
-    console.log(defaultFormat);
-    console.log(typeFormat);
-  };
-
-  const handleEvent = () => {
-    setIsEditing(true);
-    const newElementIndex = defaultFormat.length; // Get the index of the new element
-    const newElement = {
-      id: `${""}_${typeFormat}`,
-      title: "",
-      type: "source",
-    };
-    setDefaultFormat((prev) => [...prev, newElement]);
-    // inputRefs.current[newElementIndex] &&
-
-    setTimeout(() => {
-      inputRefs.current[newElementIndex].focus();
-    }, 100);
-  };
-
-  const handleInputBlur = (index) => {
-    if (inputRefs.current[index]) {
-      const newTitle = inputRefs.current[index].value;
-      handleEditTitle(index, newTitle);
-    }
-  };
-
-  const handleEditClick = () => {
-    setIsEditing(!isEditing); // Toggle edit mode
-  };
-
-  const deleteElement = (id) => {
-    setDefaultFormat(
-      (prev) => prev.filter((item) => item.id !== id) // Filter out the element with the matching id
-    );
-  };
 
   return (
     <div className=" rounded-md overflow-hidden border-solid border-[#e5e7eb] border-[1.5px] bg-white shadow-md pr-5">

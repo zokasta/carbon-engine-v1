@@ -17,7 +17,6 @@ const AppContext = createContext();
 
 // Reducer function
 const reducer = (state, action) => {
-  console.log(action)
   switch (action.type) {
     case "plugin":
       return {
