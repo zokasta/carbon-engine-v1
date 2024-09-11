@@ -1,10 +1,16 @@
 
+import { useEffect } from 'react';
 import Delete from '../../assets/SVG/Delete'
 import Axios from '../../Database/Axiso'
 
 
 export default function Navbar({ nodes = [], edges = [] }) {
+  // useEffect(()=>{
+  //   deleteData();
+  // },[])
   const showData = async () => {
+    console.log(JSON.stringify(nodes,null,2))
+    console.log(JSON.stringify(edges,null,2))
     // Dynamically sort nodes: 'Input' types come first, 'Output' types come last
     const sortedNodes = [...nodes].sort((a, b) => {
       if (a.type === 'Input' && b.type === 'Output') return -1;
