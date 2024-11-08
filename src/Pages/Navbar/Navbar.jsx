@@ -1,37 +1,46 @@
+import React, { useEffect, useState } from 'react';
+import Delete from '../../assets/SVG/Delete';
+import Axios from '../../Database/Axiso';
+import { useFlowContext } from '../../context/FlowContext'; // Adjust the import path
 
-import { useEffect } from 'react';
-import Delete from '../../assets/SVG/Delete'
-import Axios from '../../Database/Axiso'
+export default function Navbar() {
+  const { nodes, edges, updateNode } = useFlowContext();
+  const [localNodes, setLocalNodes] = useState(nodes);
+  const [localEdges, setLocalEdges] = useState(edges);
 
+  // Sync local state with context state when they change
+  useEffect(() => {
+    setLocalNodes(nodes);
+  }, [nodes]);
 
-export default function Navbar({ nodes = [], edges = [] }) {
-  // useEffect(()=>{
-  //   deleteData();
-  // },[])
+  useEffect(() => {
+    setLocalEdges(edges);
+  }, [edges]);
+
   const showData = async () => {
-    console.log(JSON.stringify(nodes,null,2))
-    console.log(JSON.stringify(edges,null,2))
-    // Dynamically sort nodes: 'Input' types come first, 'Output' types come last
-    const sortedNodes = [...nodes].sort((a, b) => {
+    console.log("Nodes:", JSON.stringify(localNodes, null, 2));
+    console.log("Edges:", JSON.stringify(localEdges, null, 2));
+
+    // Dynamically sort nodes
+    const sortedNodes = [...localNodes].sort((a, b) => {
       if (a.type === 'Input' && b.type === 'Output') return -1;
       if (a.type === 'Output' && b.type === 'Input') return 1;
       return 0;
     });
 
-    // Dynamically process nodes and edges to form the structure
+    // Process nodes and edges
     let ans = sortedNodes.map((node) => {
       let nodeStructure = {
         id: node.id,
-        type: node.type,  // Add the node type to the structure
+        type: node.type,
         structure: {},
       };
 
-      // For each node, check its outgoing connections (edges)
-      edges
+      localEdges
         .filter((edge) => edge.source === node.id)
         .forEach((edge) => {
-          const sourceField = edge.sourceHandle?.replace("_input", "") || ""; // Extract field name
-          const targetField = edge.targetHandle?.replace("_output", "") || ""; // Extract field name
+          const sourceField = edge.sourceHandle?.replace("_input", "") || "";
+          const targetField = edge.targetHandle?.replace("_output", "") || "";
 
           if (!nodeStructure.structure[sourceField]) {
             nodeStructure.structure[sourceField] = { fields: [] };
@@ -43,7 +52,6 @@ export default function Navbar({ nodes = [], edges = [] }) {
           });
         });
 
-      // Handle cases where nodes have no outgoing edges (default to "none")
       if (Object.keys(nodeStructure.structure).length === 0) {
         nodeStructure.structure = {
           email: { fields: [{ target: "none", location: "none" }] },
@@ -54,12 +62,11 @@ export default function Navbar({ nodes = [], edges = [] }) {
       return nodeStructure;
     });
 
-    // Final output format with file and dynamic structure
-    console.log("Processed Structure:");
+    // Format for the API request
     ans = { file: "makegame", format: ans };
-    console.log(JSON.stringify(ans, null, 2));
+    console.log("Processed Structure:", JSON.stringify(ans, null, 2));
 
-    // Make the dynamic API request
+    // Make API request
     try {
       const response = await Axios.post("/generate-api/", ans);
       console.log("API Response:", response.data);

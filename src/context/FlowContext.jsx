@@ -65,7 +65,7 @@ export function FlowProvider({ children }) {
             {
               id: Math.random(),
               handle: "password_output",
-              title: "output",
+              title: "password",
               type: "target",
             },
           ],
