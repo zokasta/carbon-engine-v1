@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Eye from "../../Assets/SVG/Eye";
-import EyeSlash from "../../Assets/SVG/EyeSlash";
+import Eye from "../../assets/SVG/Eye";
+import EyeSlash from "../../assets/SVG/EyeSlash";
 
 export const Password = ({
   className = "",

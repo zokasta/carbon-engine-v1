@@ -1,6 +1,6 @@
 import { useState } from "react";
-import Check from "../../Assets/SVG/Check";
-import Copy from "../../Assets/SVG/Copy";
+import Check from "../../assets/SVG/Check";
+import Copy from "../../assets/SVG/Copy";
 
 export default function CopyInput({
   active = false,

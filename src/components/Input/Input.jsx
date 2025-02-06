@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Password } from "./Password";
 import CopyInput from "./CopyInput";
 
@@ -64,7 +64,7 @@ export default function Input({
       type={type}
       className={`w-full h-10 bg-[#f4f6f8] border-[1px] ${
         valid ? "border-gray-300" : "border-gray-300"
-      } rounded-sm outline-none focus:border-orange-500 px-2 focus:border-[1.9px] ${className}`}
+      } rounded-sm outline-none focus:border-[#660479] px-2 focus:border-[1.9px] ${className}`}
       value={value}
       disabled={disable}
       onChange={(e) => {
