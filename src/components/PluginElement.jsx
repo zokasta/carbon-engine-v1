@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Handle, Position } from "reactflow";
-import Edit from "../assets/SVG/edit";
+import Edit from "../assets/SVG/Edit";
 import Save from "../assets/SVG/Save";
 import Delete from "../assets/SVG/Delete";
 

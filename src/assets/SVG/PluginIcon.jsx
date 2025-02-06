@@ -1,4 +1,4 @@
-export default function Plugin({ className = "", onClick = () => {} }) {
+export default function PluginIcon({ className = "", onClick = () => {} }) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
