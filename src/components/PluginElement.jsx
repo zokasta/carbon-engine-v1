@@ -1,18 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Handle, Position } from "reactflow";
-import Edit from "../assets/SVG/Edit";
-import Save from "../assets/SVG/Save";
-import Delete from "../assets/SVG/Delete";
 
 export default function PluginElement({
   data,
-  position = Position.Right,
-  format = [
-    { id: "username_input", title: "username", type: "source" },
-    { id: "password_input", title: "password", type: "source" },
-  ],
-  title = "Input",
-  typeFormat = "input",
 }) {
 
   return (

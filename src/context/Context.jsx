@@ -4,7 +4,7 @@ import React, { createContext, useContext, useReducer, useEffect } from "react";
 // Initial state
 const initialState = {
   home: false,
-  plugin: false,
+  plugin: 'element',
   models: false,
   api: false,
   account: false,

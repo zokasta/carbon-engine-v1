@@ -3,16 +3,19 @@ import ReactFlow, { Controls, Background } from "reactflow";
 import { useFlowContext } from "../../context/FlowContext";
 import { useAppContext } from "../../context/Context";
 import "reactflow/dist/style.css";
-import React from 'react';
-import { BrowserRouter as Router, Routes,Route } from 'react-router-dom';
+import React from "react";
 
 import CustomEdge from "../../components/CustomEdge";
 import Element from "../../components/Element";
-// import Output from "./components/Output";
 import Navbar from "../../Pages/Navbar/Navbar";
-import Plugin from "../../assets/SVG/PluginIcon";
 import Sidebar from "../../Pages/Sidebar/Sidebar";
 import PluginElement from "../../components/PluginElement";
+import ElementIcon from "../../assets/SVG/ElementIcon";
+import DatabaseIcon from "../../assets/SVG/DatabaseIcon";
+import SettingIcon from "../../assets/SVG/SettingIcon";
+import SidebarMenu from "../Sidebar/SidebarMenu";
+import SidebarSettings from "../Sidebar/SidebarSettings";
+import SettingPage from "../Settings/SettingPage";
 
 export default function Home() {
   const {
@@ -54,6 +57,11 @@ export default function Home() {
     setEdges((eds) => eds.filter((edge) => edge.id !== id));
   };
 
+  const sidebarList = [
+    { title: "elements", target: "elements", icon: ElementIcon },
+    { title: "database", target: "database", icon: DatabaseIcon },
+    { title: "settings", target: "settings", icon: SettingIcon },
+  ];
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
@@ -93,33 +101,24 @@ export default function Home() {
       <div className="h-[calc(100vh-40px)]">
         <div className="w-12 z-[2] h-full bg-[#fbf8f6] float-left border-r-[1.75px] border-[#eee5db]">
           <ul>
-            <li className="flex items-center justify-center">
-              <Plugin
-                className={`w-full h-12 py-2 cursor-pointer ${
-                  state.plugin ? "bg-[#660479] text-white" : "text-[#660479]"
-                }`}
-                onClick={() =>
-                  dispatch({
-                    type: "plugin",
-                    payload: { plugin: !state.plugin },
-                  })
-                }
-              />
-            </li>
-            <li className="flex items-center justify-center">
-              <Plugin
-                className={`w-full h-12 py-2 cursor-pointer ${
-                  state.plugin ? "bg-[#660479] text-white" : "text-[#660479]"
-                }`}
-                onClick={() =>
-                  dispatch({
-                    type: "plugin",
-                    payload: { plugin: !state.plugin },
-                  })
-                }
-              />
-            </li>
-
+            {sidebarList.map((list,index) => (
+              <li className="flex items-center justify-center" key={index}>
+                <list.icon
+                  className={`w-full h-12 py-2 cursor-pointer ${
+                    state.plugin === list.target
+                      ? "bg-[#660479] text-white"
+                      : "text-[#660479]"
+                  }`}
+                  onClick={() =>
+                    dispatch({
+                      type: "plugin",
+                      payload: { plugin: list.target },
+                    })
+                  }
+                />
+              </li>
+            ))}
+      
           </ul>
         </div>
         <div
@@ -128,8 +127,11 @@ export default function Home() {
           onDrop={onDrop}
           onDragOver={onDragOver}
         >
-          <Sidebar />
-          <div ref={reactFlowWrapper} style={{ height: "100%" }}>
+          {state.plugin === "database" && <SidebarMenu/>}
+          {state.plugin === "elements" && <Sidebar />}
+          {state.plugin === "settings" && <SidebarSettings />}
+          {state.plugin === "settings" && <SettingPage />}
+          {state.plugin === "elements" && <div ref={reactFlowWrapper} style={{ height: "100%" }}>
             <ReactFlow
               nodes={nodes}
               edges={edges.map((edge) => ({
@@ -158,7 +160,7 @@ export default function Home() {
                 className="bg-[#fbf8f6] h-20"
               />
             </ReactFlow>
-          </div>
+          </div>}
         </div>
       </div>
     </div>
