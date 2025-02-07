@@ -77,6 +77,7 @@ export default function Home() {
 
         if (nodeType) {
           const newNode = {
+            // title:'this is title',
             id: `${nodeType}_${new Date().getTime()}`,
             type: nodeType,
             position,

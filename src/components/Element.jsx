@@ -6,6 +6,7 @@ import Delete from "../assets/SVG/Delete";
 
 export default function Element({
   data = {
+    title: "default",
     handleType: "source",
     fields: [
       {
@@ -46,7 +47,9 @@ export default function Element({
   const handleEditTitle = (index, newTitle) => {
     setDefaultFormat((prev) =>
       prev.map((item, i) =>
-        i === index ? { ...item, title: newTitle, handle: `${newTitle}_${typeFormat}` } : item
+        i === index
+          ? { ...item, title: newTitle, handle: `${newTitle}_${typeFormat}` }
+          : item
       )
     );
   };
@@ -56,7 +59,7 @@ export default function Element({
     const newElementIndex = defaultFormat.length;
     const newElement = {
       id: Math.random(),
-      handle: `${'new'+Math.random()  }_${typeFormat}`,
+      handle: `${"new" + Math.random()}_${typeFormat}`,
       title: "",
       type: data.handleType,
     };
@@ -82,6 +85,10 @@ export default function Element({
     setDefaultFormat((prev) => prev.filter((item) => item.id !== id));
   };
 
+  useEffect(()=>{
+    console.log("defaultFormat")
+    console.log(defaultFormat)
+  },[defaultFormat])
   return (
     <div className="w-48 rounded-md overflow-hidden border-solid border-[#e5e7eb] border-[1.5px] h-auto bg-white shadow-md">
       <div className="p-2 h-10 bg-[#fbf8f6] z-10 text-[#0f172a] border-b-[1.5px] border-[#e5e7eb] font-bold">
@@ -90,24 +97,36 @@ export default function Element({
         {!isEditing ? (
           <Edit className="float-right mt-[6px]" onClick={handleEditClick} />
         ) : (
-          <Save className="float-right mt-[6px] text-blue-400 hover:text-blue-500" onClick={handleEditClick} />
+          <Save
+            className="float-right mt-[6px] text-blue-400 hover:text-blue-500"
+            onClick={handleEditClick}
+          />
         )}
       </div>
       <div className="p-3">
         {defaultFormat?.map((list, index) => (
-          <div key={list.id} className="flex flex-row justify-between py-1 bg-white">
+          <div
+            key={list.id}
+            className="flex flex-row justify-between py-1 bg-white"
+          >
             <input
               ref={(el) => (inputRefs.current[index] = el)}
               type="text"
               value={list.title}
               readOnly={!isEditing}
-              className={`flex-1 transition-all h-7 px-[3px] ${isEditing ? "bg-[#fbf8f6] border-[1.75px] border-[#ffe2ce]" : ""} w-[calc(100%-20px)] outline-none`}
+              className={`flex-1 transition-all h-7 px-[3px] ${
+                isEditing ? "bg-[#fbf8f6] border-[1.75px] border-[#ffe2ce]" : ""
+              } w-[calc(100%-20px)] outline-none`}
               onBlur={() => handleInputBlur(index)}
               onChange={(e) => handleEditTitle(index, e.currentTarget.value)}
             />
             <div
               onClick={() => deleteElement(list.id)}
-              className={`w-5 h-7 transition-all flex items-center justify-center ${isEditing ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"} cursor-pointer`}
+              className={`w-5 h-7 transition-all flex items-center justify-center ${
+                isEditing
+                  ? "opacity-100 pointer-events-auto"
+                  : "opacity-0 pointer-events-none"
+              } cursor-pointer`}
             >
               <Delete />
             </div>

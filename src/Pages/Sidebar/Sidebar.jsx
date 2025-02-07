@@ -6,7 +6,7 @@ export default function Sidebar() {
 
   const onDragStart = (e, nodeType, nodeData) => {
     e.dataTransfer.setData('nodeType', nodeType);
-    e.dataTransfer.setData('nodeData', JSON.stringify(nodeData)); // Add custom data here
+    e.dataTransfer.setData('nodeData', JSON.stringify(nodeData));
     e.dataTransfer.effectAllowed = 'move';
     setType(nodeType);
   };

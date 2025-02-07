@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Delete from "../../assets/SVG/Delete";
-import Axios from "../../Database/Axiso";
+import Axios from "../../Database/Axios";
 import { useFlowContext } from "../../context/FlowContext"; // Adjust the import path
 import Save from "./Save";
 
