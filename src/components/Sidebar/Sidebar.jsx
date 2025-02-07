@@ -76,6 +76,7 @@ export default function Sidebar() {
           const newNode = {
             id: `${nodeType}_${new Date().getTime()}`,
             type: nodeType,
+            title:'this is title',
             position,
             data: { ...nodeData, items: nodeData.items || [] }, // Ensure items exists
           };

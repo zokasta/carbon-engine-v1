@@ -81,6 +81,7 @@ export default function Home() {
             id: `${nodeType}_${new Date().getTime()}`,
             type: nodeType,
             position,
+            title:'this is ',
             data: { ...nodeData, items: nodeData.items || [] }, // Ensure items exists
           };
 

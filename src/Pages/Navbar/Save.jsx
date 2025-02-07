@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
-import Delete from "../../assets/SVG/Delete";
 import Axios from "../../Database/Axios";
-import { useFlowContext } from "../../context/FlowContext"; // Adjust the import path
-
+import { useFlowContext } from "../../context/FlowContext";
 
 export default function Save() {
-  const { nodes, edges, updateNode } = useFlowContext();
+  const { nodes, edges } = useFlowContext();
   const [localNodes, setLocalNodes] = useState(nodes);
   const [localEdges, setLocalEdges] = useState(edges);
 
@@ -22,34 +20,64 @@ export default function Save() {
     console.log("Nodes:", JSON.stringify(localNodes, null, 2));
     console.log("Edges:", JSON.stringify(localEdges, null, 2));
 
-    let elements = localNodes.map((node) => {
-      return {
-        element_id: node.id,
-        name: node.data.title,
-        type: node.typeFormat + "_node", // Making it 'input_node' or 'output_node'
-        nodes: node.data.fields.map((field) => ({
-          node_id: `${field.handle}_node`,
-          display_name: field.title,
-        })),
-      };
+    // Helper function to transform a handle based on node type.
+    const transformHandle = (node, handle) => {
+      if (node && node.type === "Plugin") {
+        // For Plugin nodes, map handles "h1" and "h2" to our fixed plugin node ids.
+        if (handle === "h1") return "plugin_input";
+        if (handle === "h2") return "plugin_output";
+      }
+      // For other node types, simply append _node.
+      return `${handle}_node`;
+    };
+
+    // Transform nodes into the API's "elements" format.
+    const elements = localNodes.map((node) => {
+      // For Plugin nodes, use a fixed structure.
+      if (node.type === "Plugin") {
+        return {
+          element_id: node.data.name.toLowerCase().replace(/\s+/g, "_"),
+          name: node.data.name,
+          type: "plugin",
+          nodes: [
+            { node_id: "plugin_input" },
+            { node_id: "plugin_output" },
+          ],
+        };
+      } else {
+        // For Input and Output nodes.
+        return {
+          element_id: node.id, // Adjust this if you want a different id format (e.g., append "_1")
+          name: node.data.title,
+          type: node.typeFormat + "_node", // e.g., "input_node" or "output_node"
+          nodes: node.data.fields.map((field) => ({
+            node_id: `${field.handle}_node`,
+            display_name: field.title,
+          })),
+        };
+      }
     });
 
-    let edges = localEdges.map((edge, index) => {
+    // Transform edges into the API's "edges" format.
+    const transformedEdges = localEdges.map((edge, index) => {
+      const sourceNode = localNodes.find((n) => n.id === edge.source);
+      const targetNode = localNodes.find((n) => n.id === edge.target);
       return {
         edge_id: `edge_id_${index + 1}`,
         source_id: edge.source,
         target_id: edge.target,
-        source_node_id: `${edge.sourceHandle}_node`,
-        target_node_id: `${edge.targetHandle}_node`,
+        source_node_id: transformHandle(sourceNode, edge.sourceHandle),
+        target_node_id: transformHandle(targetNode, edge.targetHandle),
       };
     });
 
+    // Final formatted data for the API.
     let formattedData = {
       api_id: "this is api id",
       filename: "makegame",
       type: "post",
       elements: elements,
-      edges: edges,
+      edges: transformedEdges,
     };
 
     console.log("Processed Structure:", JSON.stringify(formattedData, null, 2));

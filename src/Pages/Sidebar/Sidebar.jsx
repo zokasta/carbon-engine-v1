@@ -1,13 +1,14 @@
-import React from 'react';
-import { useDnD } from '../../context/DnDContext';
+import React from "react";
+import { useDnD } from "../../context/DnDContext";
+import { Position } from "reactflow";
 
 export default function Sidebar() {
   const [_, setType] = useDnD();
 
   const onDragStart = (e, nodeType, nodeData) => {
-    e.dataTransfer.setData('nodeType', nodeType);
-    e.dataTransfer.setData('nodeData', JSON.stringify(nodeData));
-    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData("nodeType", nodeType);
+    e.dataTransfer.setData("nodeData", JSON.stringify(nodeData));
+    e.dataTransfer.effectAllowed = "move";
     setType(nodeType);
   };
 
@@ -16,21 +17,40 @@ export default function Sidebar() {
       <div
         className="border-[1.75px] bg-white border-[#eee5db] h-10 mb-2 cursor-pointer flex items-center justify-center"
         draggable={true}
-        onDragStart={(e) => onDragStart(e, 'Plugin', { name: 'Email Validator',id: Math.random()})}
+        onDragStart={(e) =>
+          onDragStart(e, "Plugin", {
+            name: "Email Validator",
+            id: Math.random(),
+          })
+        }
       >
         Email Validator
       </div>
       <div
         className="border-[1.75px] border-[#eee5db] h-10 mb-2 cursor-pointer flex items-center justify-center"
         draggable={true}
-        onDragStart={(e) => onDragStart(e, 'Output', { label: 'Output Node', value: 42 })}
+        onDragStart={(e) =>
+          onDragStart(e, "Output", {
+            title: "Output Node",
+            value: 42,
+            handleType: "target",
+            positionHandel: Position.Left,
+          })
+        }
       >
         Output Node
       </div>
       <div
         className="border-[1.75px] border-[#eee5db] h-10 mb-2 cursor-pointer flex items-center justify-center"
         draggable={true}
-        onDragStart={(e) => onDragStart(e, 'Input', { label: 'Output Node', value: 42 })}
+        onDragStart={(e) =>
+          onDragStart(e, "Input", {
+            title: "Input Node",
+            value: 42,
+            handleType: "source",
+            positionHandel: Position.Right,
+          })
+        }
       >
         Input
       </div>
