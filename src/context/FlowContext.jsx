@@ -44,33 +44,33 @@ export function FlowProvider({ children }) {
           ],
         },
       },
-      {
-        id: "output_node_1",
-        position: { x: 800, y: 200 },
-        type: "Output", // Add type field here
-        typeFormat: "output",
-        data: {
-          id: "2",
-          title: "Output Node",
-          type: "Output",
-          handleType: "target",
-          positionHandel: Position.Left,
-          fields: [
-            {
-              id: Math.random(),
-              handle: "email_output",
-              title: "email",
-              type: "target",
-            },
-            {
-              id: Math.random(),
-              handle: "password_output",
-              title: "password",
-              type: "target",
-            },
-          ],
-        }, // Add title and type in the data field
-      },
+      // {
+      //   id: "output_node_1",
+      //   position: { x: 800, y: 200 },
+      //   type: "Output", // Add type field here
+      //   typeFormat: "output",
+      //   data: {
+      //     id: "2",
+      //     title: "Output Node",
+      //     type: "Output",
+      //     handleType: "target",
+      //     positionHandel: Position.Left,
+      //     fields: [
+      //       {
+      //         id: Math.random(),
+      //         handle: "email_output",
+      //         title: "email",
+      //         type: "target",
+      //       },
+      //       {
+      //         id: Math.random(),
+      //         handle: "password_output",
+      //         title: "password",
+      //         type: "target",
+      //       },
+      //     ],
+      //   }, // Add title and type in the data field
+      // },
       // {
       //   id: "output_node_2",
       //   position: { x: 800, y: 200 },

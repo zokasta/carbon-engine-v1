@@ -29,6 +29,7 @@ export default function Home() {
   } = useFlowContext();
   const { state, dispatch } = useAppContext();
 
+  // Register node types
   const nodeTypes = useMemo(
     () => ({
       Input: Element,
@@ -38,6 +39,7 @@ export default function Home() {
     []
   );
 
+  // Register custom edge type
   const edgeTypes = useMemo(
     () => ({
       custom: CustomEdge,
@@ -45,6 +47,7 @@ export default function Home() {
     []
   );
 
+  // Adjust grid layout depending on plugin state
   const gridStyles = {
     display: "grid",
     gridTemplateColumns: state.plugin ? "170px 1fr" : "0px 1fr",
@@ -53,15 +56,19 @@ export default function Home() {
   const reactFlowWrapper = useRef(null);
   const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
+  // Function to delete an edge by id
   const handleDeleteEdge = (id) => {
     setEdges((eds) => eds.filter((edge) => edge.id !== id));
   };
 
+  // Sidebar items list
   const sidebarList = [
     { title: "elements", target: "elements", icon: ElementIcon },
     { title: "database", target: "database", icon: DatabaseIcon },
     { title: "settings", target: "settings", icon: SettingIcon },
   ];
+
+  // onDrop callback for drag and drop functionality
   const onDrop = useCallback(
     (event) => {
       event.preventDefault();
@@ -77,12 +84,11 @@ export default function Home() {
 
         if (nodeType) {
           const newNode = {
-            // title:'this is title',
             id: `${nodeType}_${new Date().getTime()}`,
             type: nodeType,
             position,
-            title:'this is ',
-            data: { ...nodeData, items: nodeData.items || [] }, // Ensure items exists
+            title: "this is ",
+            data: { ...nodeData, items: nodeData.items || [] },
           };
 
           setNodes((nds) => [...nds, newNode]);
@@ -92,6 +98,7 @@ export default function Home() {
     [reactFlowInstance, setNodes]
   );
 
+  // onDragOver callback for drag and drop
   const onDragOver = useCallback((event) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
@@ -103,7 +110,7 @@ export default function Home() {
       <div className="h-[calc(100vh-40px)]">
         <div className="w-12 z-[2] h-full bg-[#fbf8f6] float-left border-r-[1.75px] border-[#eee5db]">
           <ul>
-            {sidebarList.map((list,index) => (
+            {sidebarList.map((list, index) => (
               <li className="flex items-center justify-center" key={index}>
                 <list.icon
                   className={`w-full h-12 py-2 cursor-pointer ${
@@ -120,7 +127,6 @@ export default function Home() {
                 />
               </li>
             ))}
-      
           </ul>
         </div>
         <div
@@ -129,40 +135,45 @@ export default function Home() {
           onDrop={onDrop}
           onDragOver={onDragOver}
         >
-          {state.plugin === "database" && <SidebarMenu/>}
+          {state.plugin === "database" && <SidebarMenu />}
           {state.plugin === "elements" && <Sidebar />}
           {state.plugin === "settings" && <SidebarSettings />}
           {state.plugin === "settings" && <SettingPage />}
-          {state.plugin === "elements" && <div ref={reactFlowWrapper} style={{ height: "100%" }}>
-            <ReactFlow
-              nodes={nodes}
-              edges={edges.map((edge) => ({
-                ...edge,
-                type: "custom",
-                data: { onDeleteEdge: handleDeleteEdge },
-              }))}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              onConnect={(params) =>
-                onConnect({
-                  ...params,
+          {state.plugin === "elements" && (
+            <div ref={reactFlowWrapper} style={{ height: "100%" }}>
+              <ReactFlow
+                nodes={nodes}
+                edges={edges.map((edge) => ({
+                  ...edge,
                   type: "custom",
                   data: { onDeleteEdge: handleDeleteEdge },
-                })
-              }
-              nodeTypes={nodeTypes}
-              edgeTypes={edgeTypes}
-              onInit={setReactFlowInstance} // Set the reactFlowInstance here
-            >
-              <Controls />
-              <Background
-                variant="dots"
-                gap={25}
-                size={2}
-                className="bg-[#fbf8f6] h-20"
-              />
-            </ReactFlow>
-          </div>}
+                  // Normalize handle values to strings to avoid rendering issues
+                  sourceHandle: String(edge.sourceHandle),
+                  targetHandle: String(edge.targetHandle),
+                }))}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={(params) =>
+                  onConnect({
+                    ...params,
+                    type: "custom",
+                    data: { onDeleteEdge: handleDeleteEdge },
+                  })
+                }
+                nodeTypes={nodeTypes}
+                edgeTypes={edgeTypes}
+                onInit={setReactFlowInstance}
+              >
+                <Controls />
+                <Background
+                  variant="dots"
+                  gap={25}
+                  size={2}
+                  className="bg-[#fbf8f6] h-20"
+                />
+              </ReactFlow>
+            </div>
+          )}
         </div>
       </div>
     </div>

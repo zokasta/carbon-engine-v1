@@ -57,3 +57,6 @@ input[type="number"] {
 .react-flow__node {
   padding: 0;
 }
+.react-flow__edge {
+  z-index: 10 !important;
+}
