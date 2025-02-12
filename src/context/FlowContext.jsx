@@ -18,25 +18,25 @@ export function FlowProvider({ children }) {
   const [nodes, setNodes, onNodesChange] = useNodesState(
     loadFromLocalStorage("nodes", [
       {
-        id: "input_node",
+        id: `input-${new Date().getTime()}`,
         position: { x: 200, y: 200 },
-        type: "Input", // Add type field here
+        type: "Input",
         typeFormat: "input",
         data: {
-          id: "1",
           title: "Input Node",
           type: "Input",
           handleType: "source",
           positionHandel: Position.Right,
           fields: [
             {
-              id: Math.random(),
+              id: `node-input-${new Date().getTime()}`,
               handle: "email_input",
               title: "email",
               type: "source",
+              handleType:'in'
             },
             {
-              id: Math.random(),
+              id: `node-${new Date().getTime()}`,
               handle: "password_input",
               title: "password",
               type: "source",

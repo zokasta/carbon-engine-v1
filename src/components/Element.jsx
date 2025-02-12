@@ -4,7 +4,9 @@ import Edit from "../assets/SVG/Edit";
 import Save from "../assets/SVG/Save";
 import Delete from "../assets/SVG/Delete";
 
-export default function Element({
+export default function Element(
+  // props,
+  {
   data = {
     title: "default",
     handleType: "source",
@@ -25,6 +27,7 @@ export default function Element({
     positionHandel: Position.Right,
   },
   typeFormat = "input",
+  id,
 }) {
   const [defaultFormat, setDefaultFormat] = useState(data.fields || []); // Ensure fields is always an array
   const [isEditing, setIsEditing] = useState(false);
@@ -32,6 +35,11 @@ export default function Element({
   const items = data?.items || [];
 
   // Handle keydown events for Ctrl + S
+  // useEffect(()=>{
+  //   console.log('this is props')
+  //   console.log(props)
+
+  // },[])
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.ctrlKey && event.key === "s") {
