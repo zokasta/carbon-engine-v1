@@ -86,7 +86,7 @@ export default function Sidebar() {
       },
     },
     {
-      name: "Token",
+      name: "Token Generator",
       type: "Plugin",
       structure: {
         nodes: [
@@ -104,9 +104,45 @@ export default function Sidebar() {
             positionHandel: Position.Right,
             handleType: "source",
           },
+          {
+            id:`node_out_error_${new Date().getTime()}`,
+            className: "bg-red-500",
+            style: { top: -5 },
+            positionHandel: Position.Top,
+            handleType: "source",
+          },
+          {
+            id:`node_out_error_${new Date().getTime()+1}`,
+            className: "bg-red-500",
+            style: { bottom: -5 },
+            positionHandel: Position.Bottom,
+            handleType: "source",
+          },
         ],
       },
     },
+    // {
+    //   name: "Token",
+    //   type: "Plugin",
+    //   structure: {
+    //     nodes: [
+    //       {
+    //         id:`node_in_${new Date().getTime()}`,
+    //         className: "",
+    //         style: { top: 22 },
+    //         positionHandel: Position.Left,
+    //         handleType: "target",
+    //       },
+    //       {
+    //         id:`node_out_${new Date().getTime()}`,
+    //         className: "",
+    //         style: { top: 22 },
+    //         positionHandel: Position.Right,
+    //         handleType: "source",
+    //       },
+    //     ],
+    //   },
+    // },
     {
       name: "Message",
       type: "Plugin",
@@ -130,7 +166,7 @@ export default function Sidebar() {
       },
     },
     {
-      name: "Selector",
+      name: "User Selector",
       type: "Plugin",
       className:"h-20",
       structure: {
