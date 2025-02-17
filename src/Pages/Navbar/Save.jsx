@@ -16,49 +16,70 @@ export default function Save() {
     setLocalEdges(edges);
   }, [edges]);
 
+  // Helper to transform a handle from a node into our desired node_id format
+  const transformHandle = (node, handle) => {
+    if (!node) return handle;
+    // For Plugin nodes, look up the structure's node to decide the mapping
+    if (node.type === "Plugin") {
+      const structureNodes = node.data.structure?.nodes || [];
+      const found = structureNodes.find((item) => item.id === handle);
+      if (found) {
+        if (found.handleType === "target") return "plugin_input";
+        if (found.handleType === "source") return "plugin_output";
+        if (found.handleType === "error") return "plugin_error";
+      }
+      return handle;
+    } else if (node.type === "Input" || node.type === "Output") {
+      // For Input/Output nodes, use the node's inner fields (data.nodes)
+      const fields = node.data.nodes || [];
+      const field = fields.find((f) => f.id === handle);
+      if (field) {
+        const suffix = node.type === "Input" ? "input_node" : "output_node";
+        return `${field.title.toLowerCase()}_${suffix}`;
+      }
+    }
+    return `${handle}_node`;
+  };
+
   const showData = async () => {
     console.log("Nodes:", JSON.stringify(localNodes, null, 2));
     console.log("Edges:", JSON.stringify(localEdges, null, 2));
 
-    // Helper function to transform a handle based on node type.
-    const transformHandle = (node, handle) => {
-      if (node && node.type === "Plugin") {
-        // For Plugin nodes, map handles "h1" and "h2" to our fixed plugin node ids.
-        if (handle === "h1") return "plugin_input";
-        if (handle === "h2") return "plugin_output";
-      }
-      // For other node types, simply append _node.
-      return `${handle}_node`;
-    };
-
-    // Transform nodes into the API's "elements" format.
-    const elements = localNodes.map((node) => {
-      // For Plugin nodes, use a fixed structure.
-      if (node.type === "Plugin") {
-        return {
-          element_id: node.data.name.toLowerCase().replace(/\s+/g, "_"),
-          name: node.data.name,
-          type: "plugin",
-          nodes: [
-            { node_id: "plugin_input" },
-            { node_id: "plugin_output" },
-          ],
-        };
-      } else {
-        // For Input and Output nodes.
-        return {
-          element_id: node.id, // Adjust this if you want a different id format (e.g., append "_1")
-          name: node.data.title,
-          type: node.typeFormat + "_node", // e.g., "input_node" or "output_node"
-          nodes: node.data.fields.map((field) => ({
-            node_id: `${field.handle}_node`,
+    // Transform each node from context into the API "elements" format.
+    const elements = localNodes
+      .map((node) => {
+        if (node.type === "Plugin") {
+          // For Plugin nodes, use the structure provided
+          const pluginNodes =
+            node.data.structure?.nodes?.map((item) => ({
+              handel: item.handleType,
+              node_id: item.id,
+            })) || [];
+          return {
+            element_id: node.data.name.toLowerCase().replace(/\s+/g, "_"),
+            name: node.data.name,
+            type: "plugin",
+            nodes: pluginNodes,
+          };
+        } else if (node.type === "Input" || node.type === "Output") {
+          // For Input/Output nodes, map the inner fields (node.data.nodes)
+          const suffix = node.type === "Input" ? "input_node" : "output_node";
+          const fields = (node.data.nodes || []).map((field) => ({
+            node_id: `${field.title.toLowerCase()}_${suffix}`,
             display_name: field.title,
-          })),
-        };
-      }
-    });
+          }));
+          return {
+            element_id: node.id,
+            name: node.data.title,
+            type: suffix,
+            nodes: fields,
+          };
+        }
+        return null;
+      })
+      .filter((element) => element !== null);
 
-    // Transform edges into the API's "edges" format.
+    // Transform edges into the API "edges" format.
     const transformedEdges = localEdges.map((edge, index) => {
       const sourceNode = localNodes.find((n) => n.id === edge.source);
       const targetNode = localNodes.find((n) => n.id === edge.target);
@@ -72,11 +93,11 @@ export default function Save() {
     });
 
     // Final formatted data for the API.
-    let formattedData = {
+    const formattedData = {
       api_id: "this is api id",
       filename: "makegame",
       type: "post",
-      elements: elements,
+      elements,
       edges: transformedEdges,
     };
 

@@ -18,7 +18,7 @@ export function FlowProvider({ children }) {
   const [nodes, setNodes, onNodesChange] = useNodesState(
     loadFromLocalStorage("nodes", [
       {
-        id: `input-${new Date().getTime()}`,
+        id: `input_${new Date().getTime()}`,
         position: { x: 200, y: 200 },
         type: "Input",
         title: "Input Node",
@@ -33,14 +33,14 @@ export function FlowProvider({ children }) {
           positionHandel: Position.Right,
           nodes: [
             {
-              id: `node-out-${new Date().getTime()}`,
+              id: `node_out_${new Date().getTime()}`,
               title: "email",
               type: "source",
               handleType: "out", // out, in, error
               hint: "This is hint",
             },
             {
-              id: `node-out-${new Date().getTime()+1}`,
+              id: `node_out_${new Date().getTime()+1}`,
               title: "password",
               type: "source",
               handleType: "out",

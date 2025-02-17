@@ -15,14 +15,14 @@ export default function Element({
     positionHandel: Position.Right,
     nodes: [
       {
-        id: `node-out-${new Date().getTime()}`,
+        id: `node_out_${new Date().getTime()}`,
         title: "email",
         type: "source",
         handleType: "out", // out, in, error
         hint: "This is hint",
       },
       {
-        id: `node-out-${new Date().getTime()}`,
+        id: `node_out_${new Date().getTime()}`,
         title: "password",
         type: "source",
         handleType: "out",
@@ -62,9 +62,9 @@ export default function Element({
     setIsEditing(true);
     const newElementIndex = defaultFormat.length;
     const newElement = {
-      id: `node-${
+      id: `node_${
         data.handleType === "source" ? "out" : "in"
-      }-${new Date().getTime()}`,
+      }_${new Date().getTime()}`,
       title: "",
       type: data.handleType,
       handleType: data.handleType === "source" ? "out" : "in",

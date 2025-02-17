@@ -19,28 +19,28 @@ export default function Sidebar() {
       structure: {
         nodes: [
           {
-            id:`node-in-${new Date().getTime()}`,
+            id:`node-in_${new Date().getTime()}`,
             className: "",
             style: { top: 22 },
             positionHandel: Position.Left,
             handleType: "target",
           },
           {
-            id:`node-out-${new Date().getTime()}`,
+            id:`node_out_${new Date().getTime()}`,
             className: "",
             style: { top: 22 },
             positionHandel: Position.Right,
             handleType: "source",
           },
           {
-            id:`node-out-error-${new Date().getTime()}`,
+            id:`node_out_error_${new Date().getTime()}`,
             className: "bg-red-500",
             style: { top: -5 },
             positionHandel: Position.Top,
             handleType: "source",
           },
           {
-            id:`node-out-error-${new Date().getTime()+1}`,
+            id:`node_out_error_${new Date().getTime()+1}`,
             className: "bg-red-500",
             style: { bottom: -5 },
             positionHandel: Position.Bottom,
@@ -55,31 +55,53 @@ export default function Sidebar() {
       structure: {
         nodes: [
           {
-            id:`node-in-${new Date().getTime()}`,
+            id:`node_in_${new Date().getTime()}`,
             className: "",
             style: { top: 22 },
             positionHandel: Position.Left,
             handleType: "target",
           },
           {
-            id:`node-out-${new Date().getTime()}`,
+            id:`node_out_${new Date().getTime()}`,
             className: "",
             style: { top: 22 },
             positionHandel: Position.Right,
             handleType: "source",
           },
           {
-            id:`node-out-error-${new Date().getTime()}`,
+            id:`node_out_error_${new Date().getTime()}`,
             className: "bg-red-500",
             style: { top: -5 },
             positionHandel: Position.Top,
             handleType: "source",
           },
           {
-            id:`node-out-error-${new Date().getTime()+1}`,
+            id:`node_out_error_${new Date().getTime()+1}`,
             className: "bg-red-500",
             style: { bottom: -5 },
             positionHandel: Position.Bottom,
+            handleType: "source",
+          },
+        ],
+      },
+    },
+    {
+      name: "Token",
+      type: "Plugin",
+      structure: {
+        nodes: [
+          {
+            id:`node_in_${new Date().getTime()}`,
+            className: "",
+            style: { top: 22 },
+            positionHandel: Position.Left,
+            handleType: "target",
+          },
+          {
+            id:`node_out_${new Date().getTime()}`,
+            className: "",
+            style: { top: 22 },
+            positionHandel: Position.Right,
             handleType: "source",
           },
         ],
@@ -91,14 +113,14 @@ export default function Sidebar() {
       structure: {
         nodes: [
           {
-            id:`node-in-${new Date().getTime()}`,
+            id:`node_in_${new Date().getTime()}`,
             className: "",
             style: { top: 22 },
             positionHandel: Position.Left,
             handleType: "target",
           },
           {
-            id:`node-out-${new Date().getTime()}`,
+            id:`node_out_${new Date().getTime()}`,
             className: "",
             style: { top: 22 },
             positionHandel: Position.Right,
@@ -114,35 +136,35 @@ export default function Sidebar() {
       structure: {
         nodes: [
           {
-            id:`node-in-${new Date().getTime()}`,
+            id:`node_in_${new Date().getTime()}`,
             className: "",
             style: { top: 22 },
             positionHandel: Position.Left,
             handleType: "target",
           },
           {
-            id:`node-in-${new Date().getTime()+1}`,
+            id:`node_in_${new Date().getTime()+1}`,
             className: "",
             style: { top: 66 },
             positionHandel: Position.Left,
             handleType: "target",
           },
           {
-            id:`node-out-${new Date().getTime()}`,
+            id:`node_out_${new Date().getTime()}`,
             className: "",
             style: { top: 40 },
             positionHandel: Position.Right,
             handleType: "source",
           },  
           {
-            id:`node-out-error-${new Date().getTime()}`,
+            id:`node_out_error_${new Date().getTime()}`,
             className: "bg-red-500",
             style: { top: -5 },
             positionHandel: Position.Top,
             handleType: "source",
           },
           {
-            id:`node-out-error-${new Date().getTime()+1}`,
+            id:`node_out_error_${new Date().getTime()+1}`,
             className: "bg-red-500",
             style: { bottom: -5 },
             positionHandel: Position.Bottom,
@@ -152,7 +174,7 @@ export default function Sidebar() {
       },
     },
     {
-      id:`node-in-${new Date().getTime()}`,
+      id:`node_in_${new Date().getTime()}`,
       title: "Output Node",
       name: "Output Node",
       type: "Output",
@@ -161,7 +183,7 @@ export default function Sidebar() {
       positionHandel: Position.Left,
     },
     {
-      id:`node-out-${new Date().getTime()}`,
+      id:`node_out_${new Date().getTime()}`,
       title: "Input Node",
       name: "Input Node",
       type: "Input",
