@@ -19,28 +19,28 @@ export default function Sidebar() {
       structure: {
         nodes: [
           {
-            id: Math.random(),
+            id:`node-in-${new Date().getTime()}`,
             className: "",
             style: { top: 22 },
             positionHandel: Position.Left,
             handleType: "target",
           },
           {
-            id: Math.random(),
+            id:`node-out-${new Date().getTime()}`,
             className: "",
             style: { top: 22 },
             positionHandel: Position.Right,
             handleType: "source",
           },
           {
-            id: Math.random(),
+            id:`node-out-error-${new Date().getTime()}`,
             className: "bg-red-500",
             style: { top: -5 },
             positionHandel: Position.Top,
             handleType: "source",
           },
           {
-            id: Math.random(),
+            id:`node-out-error-${new Date().getTime()+1}`,
             className: "bg-red-500",
             style: { bottom: -5 },
             positionHandel: Position.Bottom,
@@ -55,28 +55,28 @@ export default function Sidebar() {
       structure: {
         nodes: [
           {
-            id: Math.random(),
+            id:`node-in-${new Date().getTime()}`,
             className: "",
             style: { top: 22 },
             positionHandel: Position.Left,
             handleType: "target",
           },
           {
-            id: Math.random(),
+            id:`node-out-${new Date().getTime()}`,
             className: "",
             style: { top: 22 },
             positionHandel: Position.Right,
             handleType: "source",
           },
           {
-            id: Math.random(),
+            id:`node-out-error-${new Date().getTime()}`,
             className: "bg-red-500",
             style: { top: -5 },
             positionHandel: Position.Top,
             handleType: "source",
           },
           {
-            id: Math.random(),
+            id:`node-out-error-${new Date().getTime()+1}`,
             className: "bg-red-500",
             style: { bottom: -5 },
             positionHandel: Position.Bottom,
@@ -91,14 +91,14 @@ export default function Sidebar() {
       structure: {
         nodes: [
           {
-            id: Math.random(),
+            id:`node-in-${new Date().getTime()}`,
             className: "",
             style: { top: 22 },
             positionHandel: Position.Left,
             handleType: "target",
           },
           {
-            id: Math.random(),
+            id:`node-out-${new Date().getTime()}`,
             className: "",
             style: { top: 22 },
             positionHandel: Position.Right,
@@ -114,30 +114,45 @@ export default function Sidebar() {
       structure: {
         nodes: [
           {
-            id: Math.random(),
+            id:`node-in-${new Date().getTime()}`,
             className: "",
             style: { top: 22 },
             positionHandel: Position.Left,
             handleType: "target",
           },
           {
-            id: Math.random(),
+            id:`node-in-${new Date().getTime()+1}`,
             className: "",
             style: { top: 66 },
             positionHandel: Position.Left,
             handleType: "target",
           },
           {
-            id: Math.random(),
+            id:`node-out-${new Date().getTime()}`,
             className: "",
-            style: { top: 44 },
+            style: { top: 40 },
             positionHandel: Position.Right,
+            handleType: "source",
+          },  
+          {
+            id:`node-out-error-${new Date().getTime()}`,
+            className: "bg-red-500",
+            style: { top: -5 },
+            positionHandel: Position.Top,
+            handleType: "source",
+          },
+          {
+            id:`node-out-error-${new Date().getTime()+1}`,
+            className: "bg-red-500",
+            style: { bottom: -5 },
+            positionHandel: Position.Bottom,
             handleType: "source",
           },
         ],
       },
     },
     {
+      id:`node-in-${new Date().getTime()}`,
       title: "Output Node",
       name: "Output Node",
       type: "Output",
@@ -146,6 +161,7 @@ export default function Sidebar() {
       positionHandel: Position.Left,
     },
     {
+      id:`node-out-${new Date().getTime()}`,
       title: "Input Node",
       name: "Input Node",
       type: "Input",

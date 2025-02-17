@@ -21,89 +21,34 @@ export function FlowProvider({ children }) {
         id: `input-${new Date().getTime()}`,
         position: { x: 200, y: 200 },
         type: "Input",
+        title: "Input Node",
         typeFormat: "input",
+        handleType: "source",
+        positionHandel: Position.Right,
         data: {
+          hint: "this is hint",
           title: "Input Node",
           type: "Input",
           handleType: "source",
           positionHandel: Position.Right,
-          fields: [
+          nodes: [
             {
-              id: `node-input-${new Date().getTime()}`,
-              handle: "email_input",
+              id: `node-out-${new Date().getTime()}`,
               title: "email",
               type: "source",
-              handleType:'in'
+              handleType: "out", // out, in, error
+              hint: "This is hint",
             },
             {
-              id: `node-${new Date().getTime()}`,
-              handle: "password_input",
+              id: `node-out-${new Date().getTime()+1}`,
               title: "password",
               type: "source",
+              handleType: "out",
+              hint: "This is hint",
             },
           ],
         },
       },
-      // {
-      //   id: "output_node_1",
-      //   position: { x: 800, y: 200 },
-      //   type: "Output", // Add type field here
-      //   typeFormat: "output",
-      //   data: {
-      //     id: "2",
-      //     title: "Output Node",
-      //     type: "Output",
-      //     handleType: "target",
-      //     positionHandel: Position.Left,
-      //     fields: [
-      //       {
-      //         id: Math.random(),
-      //         handle: "email_output",
-      //         title: "email",
-      //         type: "target",
-      //       },
-      //       {
-      //         id: Math.random(),
-      //         handle: "password_output",
-      //         title: "password",
-      //         type: "target",
-      //       },
-      //     ],
-      //   }, // Add title and type in the data field
-      // },
-      // {
-      //   id: "output_node_2",
-      //   position: { x: 800, y: 200 },
-      //   type: "Output", // Add type field here
-      //   typeFormat: "output",
-      //   data: {
-      //     id: "3",
-      //     title: "Output Node",
-      //     type: "Output",
-      //     handleType: "target",
-      //     positionHandel: Position.Left,
-      //     fields: [
-      //       {
-      //         id: Math.random(),
-      //         handle: "email_output",
-      //         title: "email",
-      //         type: "target",
-      //       },
-      //       {
-      //         id: Math.random(),
-      //         handle: "password_output",
-      //         title: "password",
-      //         type: "target",
-      //       },
-      //     ],
-      //   }, // Add title and type in the data field
-      // },
-      // {
-      //   id: "plugin_node_1",
-      //   position: { x: 800, y: 300 },
-      //   type: "Plugin", // Add type field here
-      //   data: { id: "3", title: "Email Validator", type: "Plugin" }, // Add title and type in the data field
-      // },
     ])
   );
 
