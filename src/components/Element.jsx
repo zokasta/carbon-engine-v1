@@ -141,6 +141,7 @@ export default function Element({
               <Delete />
             </div>
             <Handle
+            key={list.id}
               type={list.type}
               position={data.positionHandel}
               id={list.id}

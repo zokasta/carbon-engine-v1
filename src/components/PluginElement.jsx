@@ -39,12 +39,15 @@ export default function PluginElement({
   },
 }) {
   return (
-    <div className={`rounded-md flex items-center overflow-hidden border-solid border-[#e5e7eb] border-[1.5px] bg-white shadow-md pr-5 ${data.className}`}>
+    <div
+      className={`rounded-md flex items-center overflow-hidden border-solid border-[#e5e7eb] border-[1.5px] bg-white shadow-md pr-5 ${data.className}`}
+    >
       <div className="p-2 bg-white z-10 text-[#0f172a] font-bold">
         <h1 className="">{data.name}</h1>
       </div>
       {data.structure.nodes.map((list) => (
         <Handle
+          key={list.id} // Add key here!
           type={list.handleType}
           position={list.positionHandel}
           id={list.id}

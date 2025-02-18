@@ -1,13 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Delete from "../../assets/SVG/Delete";
 import Axios from "../../Database/Axios";
-import { useFlowContext } from "../../context/FlowContext"; // Adjust the import path
+import { useFlowContext } from "../../context/FlowContext"; // Adjust if needed
 import Save from "./Save";
 
 export default function Navbar() {
+  // Destructure setNodes and setEdges so we can clear them
+  const { setNodes, setEdges } = useFlowContext();
 
-  // Function to delete data from localStorage
   const deleteData = () => {
+    // Clear the diagram
+    setNodes([]);
+    setEdges([]);
+
+    // Also remove them from localStorage
     localStorage.removeItem("edges");
     localStorage.removeItem("nodes");
     console.log("Edges and Nodes removed from localStorage");
