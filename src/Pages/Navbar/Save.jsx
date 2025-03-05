@@ -7,7 +7,6 @@ export default function Save() {
   const [localNodes, setLocalNodes] = useState(nodes);
   const [localEdges, setLocalEdges] = useState(edges);
 
-  // Sync local state with context state when they change
   useEffect(() => {
     setLocalNodes(nodes);
   }, [nodes]);
@@ -16,11 +15,9 @@ export default function Save() {
     setLocalEdges(edges);
   }, [edges]);
 
-  // NEW: BFS function to assign a mapping number (map_no) to nodes
   const getBFSMapping = (nodes, edges) => {
     const adjacencyList = new Map();
 
-    // Create an adjacency list from edges
     edges.forEach((edge) => {
       if (!adjacencyList.has(edge.source)) {
         adjacencyList.set(edge.source, []);
@@ -28,14 +25,12 @@ export default function Save() {
       adjacencyList.get(edge.source).push(edge.target);
     });
 
-    // Start with all Input nodes
     const startNodes = nodes.filter((n) => n.type === "Input").map((n) => n.id);
     const visited = new Set();
     const order = [];
     const queue = [...startNodes];
     let mapNo = 1;
 
-    // Standard BFS: assign map_no as we traverse
     while (queue.length > 0) {
       const current = queue.shift();
       if (!visited.has(current)) {
@@ -50,7 +45,6 @@ export default function Save() {
       }
     }
 
-    // For nodes that were not reached via BFS (disconnected nodes)
     nodes.forEach((n) => {
       if (!visited.has(n.id)) {
         order.push({ nodeId: n.id, mapNo: mapNo++ });
@@ -60,11 +54,9 @@ export default function Save() {
     return order;
   };
 
-  // Helper to transform a handle from a node into our desired node_id format
   const transformHandle = (node, handle) => {
     if (!node) return handle;
     if (node.type === "Plugin") {
-      // For Plugin nodes, look up the structure's node to decide the mapping
       const structureNodes = node.data.structure?.nodes || [];
       const found = structureNodes.find((item) => item.id === handle);
       if (found) {
@@ -74,7 +66,6 @@ export default function Save() {
       }
       return handle;
     } else if (node.type === "Input" || node.type === "Output") {
-      // For Input/Output nodes, use the node's inner fields (data.nodes)
       const fields = node.data.nodes || [];
       const field = fields.find((f) => f.id === handle);
       if (field) {
@@ -89,19 +80,16 @@ export default function Save() {
     console.log("Nodes:", JSON.stringify(localNodes, null, 2));
     console.log("Edges:", JSON.stringify(localEdges, null, 2));
 
-    // Generate BFS mapping for nodes
     const bfsMapping = getBFSMapping(localNodes, localEdges);
-    // Create a quick lookup for mapping numbers by node id
+
     const mappingDict = {};
     bfsMapping.forEach((item) => {
       mappingDict[item.nodeId] = item.mapNo;
     });
 
-    // Transform each node from context into the API "elements" format.
     const elements = localNodes
       .map((node) => {
         if (node.type === "Plugin") {
-          // For Plugin nodes, use the provided structure
           const pluginNodes =
             node.data.structure?.nodes?.map((item) => ({
               handel: item.handleType,
@@ -115,7 +103,6 @@ export default function Save() {
             map_no: mappingDict[node.id] || null,
           };
         } else if (node.type === "Input" || node.type === "Output") {
-          // For Input/Output nodes, map the inner fields (node.data.nodes)
           const suffix = node.type === "Input" ? "input_node" : "output_node";
           const fields = (node.data.nodes || []).map((field) => ({
             node_id: `${field.title.toLowerCase()}_${suffix}`,
@@ -133,7 +120,6 @@ export default function Save() {
       })
       .filter((element) => element !== null);
 
-    // Transform edges into the API "edges" format and assign a sequential map_no
     const transformedEdges = localEdges.map((edge, index) => {
       const sourceNode = localNodes.find((n) => n.id === edge.source);
       const targetNode = localNodes.find((n) => n.id === edge.target);
@@ -143,11 +129,10 @@ export default function Save() {
         target_id: edge.target,
         source_node_id: transformHandle(sourceNode, edge.sourceHandle),
         target_node_id: transformHandle(targetNode, edge.targetHandle),
-        map_no: index + 1, // Sequential mapping number for edges
+        map_no: index + 1,
       };
     });
 
-    // Final formatted data for the API.
     const formattedData = {
       api_id: "this is api id",
       filename: "makegame",
